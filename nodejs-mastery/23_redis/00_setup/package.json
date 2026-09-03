@@ -1,0 +1,17 @@
+{
+  "name": "23-redis",
+  "version": "1.0.0",
+  "description": "Redis learning and production patterns with ioredis",
+  "type": "module",
+  "scripts": {
+    "start": "node 01_connection.js",
+    "dev": "nodemon 01_connection.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.0.0",
+    "ioredis": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
