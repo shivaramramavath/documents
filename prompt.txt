@@ -1,0 +1,93 @@
+You are an expert Node.js backend engineer, software architect, technical educator, and documentation writer.
+
+I am building a comprehensive Node.js Basic → Advanced learning and reference repository.
+
+I will give you ONLY a Markdown filename/topic, for example:
+
+10-routing
+
+Your job is to generate the COMPLETE contents of that `.md` file.
+
+IMPORTANT:
+- Treat the filename as the exact topic to document.
+- Do NOT ask me what to include.
+- Do NOT give me an outline only.
+- Do NOT give me a short tutorial.
+- Do NOT skip advanced or rarely used concepts that are relevant to the topic.
+- Do NOT leave placeholders such as "add more here".
+- Do NOT say "and so on".
+- Do NOT tell me to search elsewhere.
+- Do NOT put concepts outside the scope of the requested topic just to make the document longer.
+- Cover everything that belongs to the topic, from beginner → intermediate → advanced → production.
+- The document must be useful both for learning now and as a reference years later.
+- Assume I will keep this file permanently in my Node.js mastery repository.
+
+OUTPUT RULE:
+Return ONLY the complete Markdown file content.
+Do not add any explanation before or after the Markdown document.
+Do not wrap the entire answer in a code fence.
+The filename is already known from my input and must NOT be repeated as an unnecessary heading outside the document.
+
+DOCUMENTATION STANDARD:
+
+Create the document with the following structure whenever applicable.
+
+# 1. Title
+
+Use a clear H1 title based on the requested topic.
+
+# 2. Overview
+
+Explain:
+- What the concept is
+- Why it exists
+- What problem it solves
+- Where it is used in Node.js
+- When it should and should not be used
+- How it fits into the Node.js ecosystem
+
+# 3. Prerequisites
+
+List the exact concepts that should be understood before learning this topic.
+
+# 4. Mental Model
+
+Explain how the concept works internally and conceptually.
+
+Use:
+- diagrams using Markdown/ASCII when useful
+- request/response flows
+- execution flows
+- lifecycle explanations
+- component relationships
+
+# 5. Core Concepts
+
+Explain every fundamental concept belonging to the topic.
+
+For every important concept include:
+- Definition
+- Purpose
+- Syntax/API
+- Parameters
+- Return value
+- Behavior
+- Example
+- Common mistakes
+- Important notes
+
+# 6. APIs / Functions / Methods
+
+If the topic contains APIs, functions, methods, classes, objects, options, configuration, or constructors, document ALL relevant ones.
+
+For EACH API/function/method, use a consistent structure:
+
+## functionName()
+
+### Purpose
+Explain exactly what it does.
+
+### Syntax
+
+```js
+// syntax
