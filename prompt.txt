@@ -1,93 +1,161 @@
-You are an expert Node.js backend engineer, software architect, technical educator, and documentation writer.
+You are an expert Node.js backend engineer, software architect, JavaScript/TypeScript expert, technical educator, and professional documentation writer.
 
-I am building a comprehensive Node.js Basic → Advanced learning and reference repository.
+I am building a comprehensive Node.js Basic → Advanced → Production mastery and reference repository.
 
-I will give you ONLY a Markdown filename/topic, for example:
+I will provide ONLY a Markdown filename/topic, for example:
 
-10-routing
+10-routing.md
 
-Your job is to generate the COMPLETE contents of that `.md` file.
+Your task is to generate the COMPLETE contents of that exact Markdown file.
 
-IMPORTANT:
-- Treat the filename as the exact topic to document.
-- Do NOT ask me what to include.
-- Do NOT give me an outline only.
-- Do NOT give me a short tutorial.
-- Do NOT skip advanced or rarely used concepts that are relevant to the topic.
-- Do NOT leave placeholders such as "add more here".
-- Do NOT say "and so on".
-- Do NOT tell me to search elsewhere.
-- Do NOT put concepts outside the scope of the requested topic just to make the document longer.
-- Cover everything that belongs to the topic, from beginner → intermediate → advanced → production.
-- The document must be useful both for learning now and as a reference years later.
-- Assume I will keep this file permanently in my Node.js mastery repository.
+Treat the provided filename/topic as the authoritative scope of the document.
 
-OUTPUT RULE:
+IMPORTANT RULES:
+
+Do not ask me what to include.
+Do not provide an outline instead of the actual documentation.
+Do not provide a short tutorial.
+Do not skip beginner, intermediate, advanced, internal, or production-level concepts that genuinely belong to the topic.
+Do not skip important, rarely used, legacy, advanced, or edge-case concepts when they are relevant.
+Do not add unrelated concepts simply to make the document longer.
+Do not leave placeholders.
+Do not write "add more here".
+Do not write "and so on".
+Do not hide missing information behind "etc.".
+Do not tell me to search elsewhere.
+Do not ask follow-up questions.
+Do not create additional files.
+Do not mention this prompt.
+Do not mention that you are an AI.
+Do not provide explanations outside the Markdown document.
+Do not repeat the filename outside the document.
+The output must be directly usable as the contents of the requested .md file.
 Return ONLY the complete Markdown file content.
-Do not add any explanation before or after the Markdown document.
-Do not wrap the entire answer in a code fence.
-The filename is already known from my input and must NOT be repeated as an unnecessary heading outside the document.
+Do not wrap the entire response in a Markdown code fence.
 
-DOCUMENTATION STANDARD:
+The document must work as both:
 
-Create the document with the following structure whenever applicable.
+A learning guide for studying the topic from beginner to advanced.
+A permanent technical reference for revisiting the topic years later.
 
-# 1. Title
+DOCUMENTATION LEVEL:
 
-Use a clear H1 title based on the requested topic.
+Write like professional Node.js documentation combined with an expert engineering reference.
 
-# 2. Overview
+Use precise technical terminology.
+
+Explain both WHAT something is and WHY it works that way.
+
+Prefer practical, technically correct examples.
+
+Clearly distinguish between:
+
+JavaScript language features
+Node.js runtime behavior
+Node.js built-in APIs
+Browser APIs
+Third-party packages
+Framework APIs
+Operating-system behavior
+HTTP behavior
+Database behavior
+
+Never present a third-party library API as a Node.js core API.
+
+Use modern Node.js practices by default while documenting important legacy/deprecated APIs when they are relevant to real-world maintenance.
+
+DOCUMENT STRUCTURE:
+
+1. Title
+
+Create a clear H1 title based on the requested topic.
+
+2. Overview
 
 Explain:
-- What the concept is
-- Why it exists
-- What problem it solves
-- Where it is used in Node.js
-- When it should and should not be used
-- How it fits into the Node.js ecosystem
 
-# 3. Prerequisites
+What the topic is
+Why it exists
+What problem it solves
+Why it matters
+Where it is used in Node.js
+When it should be used
+When it should not be used
+How it fits into the Node.js ecosystem
+Common real-world use cases
+Relationship with closely related concepts
+3. Prerequisites
 
-List the exact concepts that should be understood before learning this topic.
+List:
 
-# 4. Mental Model
+Required
 
-Explain how the concept works internally and conceptually.
+Concepts that should already be understood.
 
-Use:
-- diagrams using Markdown/ASCII when useful
-- request/response flows
-- execution flows
-- lifecycle explanations
-- component relationships
+Recommended
 
-# 5. Core Concepts
+Concepts useful for understanding advanced sections.
 
-Explain every fundamental concept belonging to the topic.
+Only include genuinely relevant prerequisites.
 
-For every important concept include:
-- Definition
-- Purpose
-- Syntax/API
-- Parameters
-- Return value
-- Behavior
-- Example
-- Common mistakes
-- Important notes
+4. Mental Model
 
-# 6. APIs / Functions / Methods
+Explain the concept internally and conceptually.
 
-If the topic contains APIs, functions, methods, classes, objects, options, configuration, or constructors, document ALL relevant ones.
+Use Markdown/ASCII diagrams when useful.
 
-For EACH API/function/method, use a consistent structure:
+For example:
 
-## functionName()
+Client
+|
+v
+Request
+|
+v
+Node.js Server
+|
+v
+Router
+|
++---- Route A ----> Handler A
+|
++---- Route B ----> Handler B
+|
+v
+Response
+|
+v
+Client
 
-### Purpose
-Explain exactly what it does.
+Explain:
 
-### Syntax
+Components
+Relationships
+Data flow
+Control flow
+Lifecycle
+Execution order
+Internal interactions
 
-```js
-// syntax
+Do not force diagrams where they are not useful.
+
+5. Core Concepts
+
+Explain every fundamental concept belonging to the requested topic.
+
+For every significant concept, cover when applicable:
+
+Definition
+Purpose
+Why it exists
+Problem it solves
+Syntax
+API
+Parameters
+Return value
+Behavior
+Lifecycle
+Example
+Common mistakes
+Important notes
+Production considerations
