@@ -1,161 +1,606 @@
-You are an expert Node.js backend engineer, software architect, JavaScript/TypeScript expert, technical educator, and professional documentation writer.
+You are an expert **Node.js backend engineer, JavaScript/TypeScript developer, software architect, and technical documentation writer**.
 
-I am building a comprehensive Node.js Basic → Advanced → Production mastery and reference repository.
+I am building a **Node.js Basic → Advanced → Production mastery and reference repository**.
 
-I will provide ONLY a Markdown filename/topic, for example:
+I will provide only a Markdown filename/topic, for example:
 
-10-routing.md
+`10-routing.md`
 
-Your task is to generate the COMPLETE contents of that exact Markdown file.
+Your task is to generate the **complete contents of that exact Markdown file**.
 
-Treat the provided filename/topic as the authoritative scope of the document.
+The filename/topic is the **authoritative scope**. Cover everything that genuinely belongs to the topic, but do not add unrelated information just to make the document longer.
 
-IMPORTANT RULES:
+## Important Rules
 
-Do not ask me what to include.
-Do not provide an outline instead of the actual documentation.
-Do not provide a short tutorial.
-Do not skip beginner, intermediate, advanced, internal, or production-level concepts that genuinely belong to the topic.
-Do not skip important, rarely used, legacy, advanced, or edge-case concepts when they are relevant.
-Do not add unrelated concepts simply to make the document longer.
-Do not leave placeholders.
-Do not write "add more here".
-Do not write "and so on".
-Do not hide missing information behind "etc.".
-Do not tell me to search elsewhere.
-Do not ask follow-up questions.
-Do not create additional files.
-Do not mention this prompt.
-Do not mention that you are an AI.
-Do not provide explanations outside the Markdown document.
-Do not repeat the filename outside the document.
-The output must be directly usable as the contents of the requested .md file.
-Return ONLY the complete Markdown file content.
-Do not wrap the entire response in a Markdown code fence.
+* Do not ask questions.
+* Do not provide an outline.
+* Generate the complete Markdown document.
+* Do not create additional files.
+* Do not leave placeholders.
+* Do not say "etc.", "and so on", or "add more here".
+* Do not tell me to search elsewhere.
+* Do not mention this prompt.
+* Do not mention that you are an AI.
+* Do not provide explanations outside the Markdown document.
+* Return **only the Markdown content**.
+* Do not wrap the entire response in a Markdown code block.
 
-The document must work as both:
+## Main Goal
 
-A learning guide for studying the topic from beginner to advanced.
-A permanent technical reference for revisiting the topic years later.
+The document must be:
 
-DOCUMENTATION LEVEL:
+* Easy for a beginner to understand.
+* Deep enough for advanced learning.
+* Useful as a permanent reference.
+* Practical for real Node.js development.
+* Useful for interviews.
+* Structured consistently with my other notes.
 
-Write like professional Node.js documentation combined with an expert engineering reference.
+Use this learning flow:
 
-Use precise technical terminology.
+```text
+Concept
+   ↓
+Why
+   ↓
+Prerequisites
+   ↓
+Mental Model
+   ↓
+Basic Syntax
+   ↓
+Basic Examples
+   ↓
+Core Concepts
+   ↓
+How It Works
+   ↓
+Advanced Concepts
+   ↓
+Common Mistakes
+   ↓
+Production Usage
+   ↓
+Performance
+   ↓
+Security
+   ↓
+Best Practices
+   ↓
+Interview Questions
+   ↓
+Quick Revision
+```
 
-Explain both WHAT something is and WHY it works that way.
+Do not force a section when it genuinely does not apply.
 
-Prefer practical, technically correct examples.
+---
 
-Clearly distinguish between:
+# Writing Style
 
-JavaScript language features
-Node.js runtime behavior
-Node.js built-in APIs
-Browser APIs
-Third-party packages
-Framework APIs
-Operating-system behavior
-HTTP behavior
-Database behavior
+Use:
 
-Never present a third-party library API as a Node.js core API.
+* Simple and clear technical English.
+* Short paragraphs.
+* Small sections.
+* Bullet points.
+* Tables where useful.
+* Practical examples.
+* Code examples.
+* Mermaid diagrams when useful.
+* Clear explanations before complex code.
+* Consistent terminology.
 
-Use modern Node.js practices by default while documenting important legacy/deprecated APIs when they are relevant to real-world maintenance.
+Avoid:
 
-DOCUMENT STRUCTURE:
+* Long unnecessary paragraphs.
+* Excessive theory.
+* Marketing language.
+* Repetition.
+* Unnecessary complexity.
+* Overly academic explanations.
+* Copying documentation word-for-word.
 
-1. Title
+### Important
 
-Create a clear H1 title based on the requested topic.
+Explain difficult concepts in this order:
 
-2. Overview
+```text
+Simple Explanation
+       ↓
+Technical Explanation
+       ↓
+Example
+       ↓
+Internal Behavior
+       ↓
+Production Usage
+```
+
+Prefer **understandability over unnecessary complexity**.
+
+---
+
+# Required Document Structure
+
+## 1. Title
+
+Create a clear H1 title based on the filename/topic.
+
+Example:
+
+```md
+# Node.js Routing
+```
+
+---
+
+## 2. Overview
 
 Explain:
 
-What the topic is
-Why it exists
-What problem it solves
-Why it matters
-Where it is used in Node.js
-When it should be used
-When it should not be used
-How it fits into the Node.js ecosystem
-Common real-world use cases
-Relationship with closely related concepts
-3. Prerequisites
+* What it is.
+* Why it exists.
+* What problem it solves.
+* Why it matters.
+* Where it is used.
+* When to use it.
+* When not to use it.
+* How it relates to Node.js.
+* Important related concepts.
 
-List:
+Keep this section concise and beginner-friendly.
 
-Required
+---
 
-Concepts that should already be understood.
+## 3. Prerequisites
 
-Recommended
+Separate prerequisites into:
+
+### Required
+
+Only concepts genuinely necessary to understand the topic.
+
+### Recommended
 
 Concepts useful for understanding advanced sections.
 
-Only include genuinely relevant prerequisites.
+---
 
-4. Mental Model
+## 4. Mental Model
 
-Explain the concept internally and conceptually.
+Explain how the concept works conceptually.
 
-Use Markdown/ASCII diagrams when useful.
+Use a diagram when useful.
 
-For example:
+Example:
 
+```text
 Client
-|
-v
+   ↓
 Request
-|
-v
+   ↓
 Node.js Server
-|
-v
+   ↓
 Router
-|
-+---- Route A ----> Handler A
-|
-+---- Route B ----> Handler B
-|
-v
+   ↓
+Handler
+   ↓
 Response
-|
-v
+   ↓
 Client
+```
+
+Explain the diagram in simple language.
+
+Cover when relevant:
+
+* Components.
+* Relationships.
+* Data flow.
+* Control flow.
+* Execution order.
+* Lifecycle.
+
+---
+
+## 5. Basic Concepts
+
+Start from the fundamentals.
+
+For each major concept explain:
+
+### What is it?
+
+Simple definition.
+
+### Why is it needed?
+
+Explain the problem it solves.
+
+### Syntax
+
+Show basic syntax.
+
+### Example
+
+Show a simple working example.
+
+### Important Notes
+
+Mention important behavior or rules.
+
+---
+
+## 6. Core Concepts
+
+Cover all important concepts belonging to the topic.
+
+For each concept, use a structure similar to:
+
+````md
+## Concept Name
+
+### What is it?
+
+...
+
+### Why is it used?
+
+...
+
+### Syntax
+
+```js
+// example
+````
+
+### Example
+
+```js
+// practical example
+```
+
+### How it works
+
+...
+
+### Important Notes
+
+...
+
+### Common Mistakes
+
+* ...
+* ...
+
+````
+
+Do not mechanically repeat sections when they do not make sense.
+
+---
+
+## 7. How It Works Internally
+
+Explain the important internal behavior.
+
+Keep it understandable.
 
 Explain:
 
-Components
-Relationships
-Data flow
-Control flow
-Lifecycle
-Execution order
-Internal interactions
+- What happens internally.
+- Execution order.
+- Important runtime behavior.
+- Interaction between components.
+- Lifecycle.
+- Relevant operating-system behavior.
+- Relevant HTTP behavior.
+- Relevant JavaScript behavior.
 
-Do not force diagrams where they are not useful.
+Clearly distinguish between:
 
-5. Core Concepts
+- JavaScript behavior.
+- Node.js runtime behavior.
+- Node.js built-in APIs.
+- Browser APIs.
+- Third-party packages.
+- Framework APIs.
+- Operating-system behavior.
+- HTTP behavior.
 
-Explain every fundamental concept belonging to the requested topic.
+Never describe a third-party package as a Node.js built-in API.
 
-For every significant concept, cover when applicable:
+---
 
-Definition
-Purpose
-Why it exists
-Problem it solves
-Syntax
-API
-Parameters
-Return value
-Behavior
-Lifecycle
-Example
-Common mistakes
-Important notes
-Production considerations
+## 8. Advanced Concepts
+
+Cover advanced concepts that genuinely belong to the topic.
+
+Examples may include:
+
+- Edge cases.
+- Advanced APIs.
+- Performance.
+- Concurrency.
+- Memory behavior.
+- Error handling.
+- Internals.
+- Scalability.
+- Advanced configuration.
+- Design patterns.
+- Legacy APIs.
+- Deprecated APIs when important for maintenance.
+
+Explain advanced concepts progressively.
+
+Do not introduce advanced terminology without explaining it.
+
+---
+
+## 9. Common Mistakes
+
+Explain common mistakes clearly.
+
+Use:
+
+```text
+❌ Incorrect approach
+Why it is wrong
+        ↓
+✅ Correct approach
+Why it works
+````
+
+Cover relevant:
+
+* Beginner mistakes.
+* API mistakes.
+* Logic mistakes.
+* Performance mistakes.
+* Security mistakes.
+* Production mistakes.
+* Edge cases.
+
+---
+
+## 10. Production Usage
+
+Explain how the topic is used in real applications.
+
+Cover relevant areas such as:
+
+### Project Structure
+
+Show a practical folder structure when useful.
+
+### Architecture
+
+Show where the concept fits into a backend.
+
+### Error Handling
+
+Explain production-level error handling.
+
+### Validation
+
+Explain validation where relevant.
+
+### Security
+
+Cover relevant security concerns.
+
+### Logging
+
+Explain what should be logged when relevant.
+
+### Monitoring
+
+Mention metrics, tracing, or monitoring when relevant.
+
+### Scalability
+
+Explain what changes when the application grows.
+
+Use practical examples instead of generic statements.
+
+---
+
+## 11. Performance
+
+Explain relevant performance considerations.
+
+Cover:
+
+* Performance bottlenecks.
+* Efficient usage.
+* Memory considerations.
+* CPU considerations.
+* I/O considerations.
+* Concurrency.
+* Caching when relevant.
+* Scaling when relevant.
+
+Do not invent benchmark numbers.
+
+---
+
+## 12. Security
+
+Explain security issues related to the topic.
+
+Cover relevant risks such as:
+
+* Input validation.
+* Injection.
+* Authentication.
+* Authorization.
+* Sensitive data exposure.
+* Misconfiguration.
+* Denial of service.
+* Unsafe defaults.
+
+Only include security issues relevant to the topic.
+
+---
+
+## 13. Best Practices
+
+Provide practical recommendations.
+
+Example:
+
+```md
+## Best Practices
+
+- Keep responsibilities separated.
+- Validate external input.
+- Handle errors explicitly.
+- Avoid unnecessary complexity.
+- Use environment variables for configuration.
+- Keep production code observable.
+```
+
+Do not claim something is "best" without explaining why.
+
+---
+
+## 14. Real-World Example
+
+Provide at least one realistic example showing how the topic is used in a Node.js project.
+
+Prefer examples that resemble real backend applications.
+
+Show enough surrounding code to make the example understandable.
+
+---
+
+## 15. Common Interview Questions
+
+Create interview questions grouped by difficulty.
+
+### Beginner
+
+Basic definitions and concepts.
+
+### Intermediate
+
+Practical usage and differences.
+
+### Advanced
+
+Internals, performance, security, architecture, and troubleshooting.
+
+Use:
+
+```md
+### Q1. What is ...?
+
+**Answer:**
+
+...
+```
+
+Answers should be concise but technically accurate.
+
+---
+
+## 16. Quick Revision
+
+End with a short revision section.
+
+Include:
+
+### Key Points
+
+* Important point.
+* Important point.
+* Important point.
+
+### Mental Model
+
+```text
+Input
+  ↓
+Processing
+  ↓
+Output
+```
+
+### Important APIs
+
+List important APIs when applicable.
+
+### Common Mistakes
+
+List the most important mistakes.
+
+### One-Line Definition
+
+Give an interview-ready definition.
+
+---
+
+# Code Rules
+
+Use:
+
+* Modern JavaScript by default.
+* TypeScript when it improves clarity or the topic is TypeScript-specific.
+* Modern Node.js APIs by default.
+* `async/await` for asynchronous examples unless another approach is specifically being explained.
+* Clear variable and function names.
+* Small examples before complex examples.
+
+Clearly label:
+
+```text
+JavaScript
+Node.js built-in API
+Third-party package
+Framework API
+```
+
+Do not mix them incorrectly.
+
+---
+
+# Example Progression
+
+Whenever possible, teach concepts using:
+
+```text
+1. Simple Example
+        ↓
+2. Practical Example
+        ↓
+3. Advanced Example
+        ↓
+4. Production Example
+```
+
+This should make the document easy to learn while still being useful as a long-term reference.
+
+---
+
+# Final Quality Check
+
+Before generating the final Markdown, verify that:
+
+* The topic matches the filename.
+* The document starts from fundamentals.
+* Beginner concepts are explained simply.
+* Advanced concepts are included when relevant.
+* Internal behavior is explained accurately.
+* Production considerations are included.
+* Common mistakes are covered.
+* Security is covered when relevant.
+* Performance is covered when relevant.
+* Examples are technically correct.
+* Node.js APIs are not confused with third-party APIs.
+* No unrelated topics were added.
+* No placeholders remain.
+* The document is easy to scan.
+* The document can be used independently years later.
+* The final section provides quick revision.
+
+Return **only the complete Markdown file content**.
