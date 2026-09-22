@@ -1,29 +1,23 @@
-# dotenv — Node.js Reference
+# dotenv — Reference Guide
 
-## 1. What is dotenv?
+## What is dotenv?
 
-`dotenv` is a Node.js library that loads variables from a `.env` file into `process.env`.
+`dotenv` is a Node.js library that loads variables from a `.env` file into `process.env`, so you can keep configuration out of your source code.
 
-```text
+```
 .env → dotenv → process.env → Application
 ```
 
----
-
-## 2. Why use dotenv?
-
-Keep configuration outside source code.
-
-❌ Hardcoded:
+## Why use it?
 
 ```js
+// ❌ Hardcoded
 const PORT = 5000;
 const JWT_SECRET = "secret";
 ```
 
-✅ Environment variables:
-
 ```env
+# ✅ In .env
 PORT=5000
 JWT_SECRET=my-secret
 ```
@@ -32,56 +26,31 @@ JWT_SECRET=my-secret
 console.log(process.env.PORT);
 ```
 
-Useful for:
+Common uses: database URLs, API keys, JWT secrets, ports, Redis URLs, and other app config that differs between environments.
 
-- Database URLs
-- API keys
-- JWT secrets
-- Ports
-- Redis URLs
-- App configuration
-
----
-
-## 3. Install
+## Install
 
 ```bash
 npm install dotenv
 ```
 
----
-
-## 4. Basic Usage
-
-### CommonJS
+## Usage (ES Modules)
 
 ```js
-require("dotenv").config();
+import "dotenv/config";
+
+console.log(process.env.PORT);
 ```
 
-### ES Modules
+If you need custom options (like a non-default path), import `dotenv` directly instead:
 
 ```js
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: ".env.development" });
 ```
 
-### Short form
-
-```js
-import "dotenv/config";
-```
-
-Then:
-
-```js
-console.log(process.env.PORT);
-```
-
----
-
-## 5. `.env`
+## `.env` file
 
 ```env
 PORT=5000
@@ -91,34 +60,25 @@ JWT_SECRET=my-secret
 REDIS_URL=redis://localhost:6379
 ```
 
----
-
-## 6. Important: Values Are Strings
-
-```env
-PORT=5000
-DEBUG=true
-```
+## Values are always strings
 
 ```js
-process.env.PORT; // "5000"
-process.env.DEBUG; // "true"
+process.env.PORT; // "5000"  (string, not number)
+process.env.DEBUG; // "true"  (string, not boolean)
 ```
 
-Convert when necessary:
+Convert manually when needed:
 
 ```js
 const port = Number(process.env.PORT);
 const debug = process.env.DEBUG === "true";
 ```
 
-For proper validation/type conversion, use **envalid**.
+For proper schema validation and type coercion, pair `dotenv` with **envalid**.
 
----
+## `.env.example`
 
-## 7. `.env.example`
-
-Commit an example, not your real secrets:
+Commit a template, never the real secrets:
 
 ```env
 PORT=
@@ -136,48 +96,34 @@ REDIS_URL=
 !.env.example
 ```
 
----
+## Multiple environments
 
-## 8. Custom `.env` Path
-
-```js
-dotenv.config({
-  path: ".env.development",
-});
 ```
-
-Example:
-
-```text
 .env
 .env.development
 .env.test
 .env.production
 ```
 
----
-
-## 9. Override Existing Variables
-
-By default, existing environment variables are not overwritten.
-
 ```js
-dotenv.config({
-  override: true,
-});
+dotenv.config({ path: ".env.development" });
 ```
 
-Use this carefully because environment-variable precedence matters.
+## Overriding existing variables
 
----
+By default, `dotenv` will **not** overwrite a variable that's already set in `process.env`. To force it to:
 
-## 10. Recommended Configuration Pattern
+```js
+dotenv.config({ override: true });
+```
 
-Don't access `process.env` everywhere.
+Use this deliberately — it affects environment-variable precedence (e.g. values set by your shell or CI system).
 
-Create:
+## Centralize config access
 
-```text
+Avoid reading `process.env` scattered throughout your codebase. Instead:
+
+```
 src/
 └── config/
     └── env.ts
@@ -195,37 +141,15 @@ export const env = {
 };
 ```
 
-Use:
-
 ```ts
 import { env } from "./config/env.js";
 
 console.log(env.port);
 ```
 
----
+## dotenv + envalid
 
-## 11. dotenv + envalid
-
-`dotenv` **loads**.
-
-`envalid` **validates**.
-
-```text
-.env
- ↓
-dotenv
- ↓
-process.env
- ↓
-envalid
- ↓
-validated config
- ↓
-Application
-```
-
-Example:
+`dotenv` loads values; `envalid` validates and types them.
 
 ```ts
 import "dotenv/config";
@@ -238,57 +162,22 @@ export const env = cleanEnv(process.env, {
 });
 ```
 
----
+| Library   | Purpose                                       |
+| --------- | --------------------------------------------- |
+| `dotenv`  | Load `.env` into `process.env`                |
+| `envalid` | Validate and type-check environment variables |
 
-## 12. dotenv vs envalid
+> **dotenv = Load. envalid = Validate.**
 
-| Library   | Purpose                             |
-| --------- | ----------------------------------- |
-| `dotenv`  | Load `.env`                         |
-| `envalid` | Validate/type environment variables |
+## Security
 
-Remember:
+`dotenv` is **not** a secrets manager. It does not encrypt, validate, or secure credentials.
 
-> **dotenv = Load**
-> **envalid = Validate**
+- Never log `process.env` in full.
+- Never commit `.env` to version control.
+- For production, use a real secrets manager: AWS Secrets Manager, HashiCorp Vault, Kubernetes Secrets, Docker Secrets, or your cloud provider's equivalent.
 
----
-
-## 13. Security
-
-`dotenv` is **not** a secret manager.
-
-It does not:
-
-- Encrypt secrets
-- Validate secrets
-- Secure production credentials
-
-Never:
-
-```js
-console.log(process.env);
-```
-
-Never commit:
-
-```text
-.env
-```
-
-For production, consider:
-
-- AWS Secrets Manager
-- Kubernetes Secrets
-- Docker Secrets
-- HashiCorp Vault
-- Cloud-provider secret managers
-
----
-
-## 14. Docker
-
-Docker can inject environment variables directly:
+## Docker
 
 ```yaml
 services:
@@ -297,118 +186,30 @@ services:
       - .env
 ```
 
-Inside Node:
+Values are available the same way inside the container:
 
 ```js
 process.env.DATABASE_URL;
 ```
 
----
+## Native alternative (no dependency)
 
-## 15. Modern Node.js Alternative
-
-Modern Node.js can load `.env` without `dotenv`:
+Modern Node.js can load `.env` files without installing `dotenv`:
 
 ```bash
 node --env-file=.env src/server.js
 ```
 
-So:
+Use `dotenv` when you need multiple files, overrides, or programmatic control; use `--env-file` for a zero-dependency, single-file setup.
 
-```text
-dotenv
-```
+## Common mistakes
 
-is a popular library-based solution, while:
-
-```text
-node --env-file
-```
-
-is the native Node.js approach.
-
----
-
-## 16. Common Mistakes
-
-### Forgetting to load dotenv
-
-```js
-import "dotenv/config";
-```
-
-### Assuming values have types
-
-```js
-process.env.PORT; // "5000"
-```
-
-not:
-
-```js
-5000;
-```
-
-### Committing `.env`
-
-Add:
-
-```gitignore
-.env
-```
-
-### Accessing environment variables everywhere
-
-Prefer:
-
-```text
-process.env
-     ↓
-config/env.ts
-     ↓
-application
-```
-
-### Expecting dotenv to validate
-
-Use:
-
-```text
-dotenv + envalid
-```
-
----
-
-# Quick Revision
-
-```text
-dotenv
-│
-├── What?
-│   └── Loads .env → process.env
-│
-├── Install
-│   └── npm install dotenv
-│
-├── Load
-│   ├── dotenv.config()
-│   └── import "dotenv/config"
-│
-├── Important
-│   └── Environment values are strings
-│
-├── Security
-│   ├── Don't commit .env
-│   └── Don't log secrets
-│
-├── Configuration
-│   └── Centralize in config/env.ts
-│
-└── With envalid
-    ├── dotenv = Load
-    └── envalid = Validate
-```
+- **Forgetting to load it** — nothing under `import "dotenv/config"` runs before it, so import it first.
+- **Assuming types** — `process.env.PORT` is `"5000"`, not `5000`.
+- **Committing `.env`** — always add it to `.gitignore`.
+- **Reading `process.env` everywhere** — centralize access through a single config module.
+- **Expecting validation** — `dotenv` only loads; pair it with `envalid` if you need validation.
 
 ## One-line definition
 
-> **dotenv loads environment variables from `.env` into `process.env`.**
+> `dotenv` loads environment variables from `.env` into `process.env`.

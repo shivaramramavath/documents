@@ -1,75 +1,36 @@
-# envalid — Node.js Reference
+# envalid — Reference Guide
 
-## 1. What is envalid?
+## What is envalid?
 
-`envalid` is a Node.js library for **validating and cleaning environment variables**.
+`envalid` validates and cleans environment variables — it ensures required config exists and has the correct type, converting `process.env` strings into properly typed values.
 
-It helps ensure that required configuration exists and has the correct type/value.
-
-```text
-.env
- ↓
-dotenv
- ↓
-process.env
- ↓
-envalid
- ↓
-validated config
- ↓
-Application
+```
+.env → dotenv → process.env → envalid → validated config → Application
 ```
 
----
-
-## 2. Why use envalid?
-
-Without validation:
+## Why use it?
 
 ```js
-const port = process.env.PORT;
+// ❌ Without validation
+const port = process.env.PORT; // might not exist, is always a string, fails silently later
 ```
-
-Problems:
-
-- `PORT` may not exist
-- `PORT` may contain invalid data
-- Everything from `process.env` is a string
-- Errors may appear later during application execution
-
-With `envalid`:
 
 ```js
-const env = cleanEnv(process.env, {
-  PORT: port(),
-});
+// ✅ With envalid
+const env = cleanEnv(process.env, { PORT: port() });
+env.PORT; // validated and converted to a number
 ```
 
-Now `env.PORT` is validated and converted to a number.
-
----
-
-# 3. Install
-
-Using npm:
-
-```bash
-npm install envalid
-```
-
-Usually combine it with dotenv:
+## Install
 
 ```bash
 npm install dotenv envalid
 ```
 
----
-
-# 4. Basic Usage
+## Basic usage
 
 ```js
 import "dotenv/config";
-
 import { cleanEnv, str, port } from "envalid";
 
 const env = cleanEnv(process.env, {
@@ -77,35 +38,13 @@ const env = cleanEnv(process.env, {
   PORT: port(),
 });
 
-console.log(env.NODE_ENV);
-console.log(env.PORT);
+console.log(env.NODE_ENV); // "development"
+console.log(env.PORT); // 5000 (number, not string)
 ```
 
-`.env`:
+## `cleanEnv()`
 
-```env
-NODE_ENV=development
-PORT=5000
-```
-
-Result:
-
-```js
-env.NODE_ENV; // "development"
-env.PORT; // 5000
-```
-
----
-
-# 5. Main Function — `cleanEnv()`
-
-The most important function:
-
-```js
-cleanEnv(process.env, schema);
-```
-
-Example:
+The core function. It takes `process.env` and a schema object, validates each variable against its rule, converts types, and returns a clean config object.
 
 ```js
 const env = cleanEnv(process.env, {
@@ -115,207 +54,56 @@ const env = cleanEnv(process.env, {
 });
 ```
 
-Think:
+If a required variable is missing or invalid, `envalid` throws and stops the app at startup — **fail-fast validation** — instead of letting a bad config cause errors later during execution.
 
-```text
-cleanEnv()
-   │
-   ├── receives process.env
-   │
-   ├── validates variables
-   │
-   ├── converts values
-   │
-   └── returns clean configuration
-```
+## Validators
 
----
+| Validator | Checks for                     | Example                |
+| --------- | ------------------------------ | ---------------------- |
+| `str()`   | A string                       | `APP_NAME: str()`      |
+| `num()`   | A number                       | `MAX_USERS: num()`     |
+| `port()`  | A valid TCP port               | `PORT: port()`         |
+| `bool()`  | A boolean (`"true"`/`"false"`) | `ENABLE_CACHE: bool()` |
+| `url()`   | A valid URL                    | `DATABASE_URL: url()`  |
+| `email()` | A valid email address          | `ADMIN_EMAIL: email()` |
 
-# 6. Common Validators
+By default, every validator requires the variable to be present — validation fails if it's missing or empty.
 
-## `str()`
+## Options
 
-String value:
+Each validator accepts an options object:
 
-```js
-APP_NAME: str();
-```
+| Option       | Purpose                                                      | Example                                                             |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------------- |
+| `default`    | Value used when the variable is missing (makes it optional)  | `PORT: port({ default: 5000 })`                                     |
+| `devDefault` | Value used only in development; still required in production | `PORT: port({ devDefault: 5000 })`                                  |
+| `choices`    | Restricts the value to a fixed set (enum-like)               | `NODE_ENV: str({ choices: ["development", "test", "production"] })` |
+| `desc`       | Documents what the variable is for                           | `PORT: port({ desc: "HTTP server port" })`                          |
+| `example`    | Shows a sample value in validation error messages            | `DATABASE_URL: url({ example: "mongodb://localhost:27017/app" })`   |
 
-```env
-APP_NAME=MyApp
-```
-
----
-
-## `num()`
-
-Number:
-
-```js
-MAX_USERS: num();
-```
-
-```env
-MAX_USERS=100
-```
-
-Result:
-
-```js
-env.MAX_USERS; // 100
-```
-
----
-
-## `port()`
-
-Valid TCP port:
-
-```js
-PORT: port();
-```
-
-```env
-PORT=5000
-```
-
----
-
-## `bool()`
-
-Boolean:
-
-```js
-ENABLE_CACHE: bool();
-```
-
-```env
-ENABLE_CACHE=true
-```
-
-Result:
-
-```js
-env.ENABLE_CACHE; // true
-```
-
----
-
-## `url()`
-
-URL:
-
-```js
-DATABASE_URL: url();
-```
-
-Example:
-
-```env
-DATABASE_URL=mongodb://localhost:27017/app
-```
-
----
-
-## `email()`
-
-Email:
-
-```js
-ADMIN_EMAIL: email();
-```
-
-```env
-ADMIN_EMAIL=admin@example.com
-```
-
----
-
-# 7. Required Variables
-
-By default, validators such as:
-
-```js
-JWT_SECRET: str();
-```
-
-require the variable to exist.
-
-If:
-
-```env
-JWT_SECRET=
-```
-
-or it is missing, validation fails.
-
-This is useful for critical configuration.
-
----
-
-# 8. Default Values
-
-Use `default` when a variable is optional.
-
-```js
-PORT: port({
-  default: 5000,
-});
-```
-
-If `PORT` isn't supplied:
-
-```js
-env.PORT;
-```
-
-becomes:
-
-```text
-5000
-```
-
-Another example:
-
-```js
-LOG_LEVEL: str({
-  default: "info",
-});
-```
-
----
-
-# 9. Allowed Values — `choices`
-
-Restrict a variable to specific values:
+Combined:
 
 ```js
 NODE_ENV: str({
   choices: ["development", "test", "production"],
-});
+  default: "development",
+}),
+PORT: port({
+  desc: "HTTP server port",
+  default: 5000,
+}),
+DATABASE_URL: url({
+  desc: "MongoDB connection URL",
+  example: "mongodb://localhost:27017/app",
+}),
 ```
 
-Valid:
+## Real-world example
 
-```env
-NODE_ENV=production
-```
-
-Invalid:
-
-```env
-NODE_ENV=hello
-```
-
-This is useful for enum-like configuration.
-
----
-
-# 10. Example: Real Backend Configuration
+`src/config/env.js`:
 
 ```js
 import "dotenv/config";
-
 import { cleanEnv, port, str, url, bool } from "envalid";
 
 export const env = cleanEnv(process.env, {
@@ -323,439 +111,53 @@ export const env = cleanEnv(process.env, {
     choices: ["development", "test", "production"],
     default: "development",
   }),
-
-  PORT: port({
-    default: 5000,
-  }),
-
+  PORT: port({ default: 5000 }),
   DATABASE_URL: url(),
-
   REDIS_URL: url(),
-
   JWT_ACCESS_SECRET: str(),
-
   JWT_REFRESH_SECRET: str(),
-
-  JWT_ACCESS_EXPIRES_IN: str({
-    default: "15m",
-  }),
-
-  ENABLE_SWAGGER: bool({
-    default: false,
-  }),
-
+  JWT_ACCESS_EXPIRES_IN: str({ default: "15m" }),
+  ENABLE_SWAGGER: bool({ default: false }),
   CORS_ORIGIN: url(),
 });
 ```
 
-Now use:
+Usage elsewhere in the app:
 
 ```js
 import { env } from "./config/env.js";
 
-console.log(env.PORT);
+app.listen(env.PORT);
 console.log(env.DATABASE_URL);
 ```
 
----
+Prefer this centralized `env` object over reading `process.env.X` throughout the codebase — it's typed, validated once at startup, and self-documenting.
 
-# 11. Recommended Project Structure
+## `process.env` vs validated `env`
 
-```text
-project/
-│
-├── .env
-├── .env.example
-├── .gitignore
-├── package.json
-│
-└── src/
-    ├── config/
-    │   └── env.js
-    │
-    ├── controllers/
-    ├── services/
-    ├── routes/
-    ├── middlewares/
-    ├── app.js
-    └── server.js
-```
+|               | `process.env.PORT`       | `env.PORT` (envalid)                |
+| ------------- | ------------------------ | ----------------------------------- |
+| Type          | `"5000"` (string)        | `5000` (number)                     |
+| Missing value | `undefined`, fails later | Fails at startup, or uses `default` |
+| Invalid value | Not detected             | Rejected immediately                |
 
-`src/config/env.js`:
+## dotenv vs envalid
 
-```js
-import "dotenv/config";
-
-import { cleanEnv, port, str, url } from "envalid";
-
-export const env = cleanEnv(process.env, {
-  NODE_ENV: str({
-    choices: ["development", "test", "production"],
-    default: "development",
-  }),
-
-  PORT: port({
-    default: 5000,
-  }),
-
-  DATABASE_URL: url(),
-
-  JWT_SECRET: str(),
-});
-```
-
----
-
-# 12. Why `cleanEnv`?
-
-Instead of using:
-
-```js
-process.env.PORT;
-```
-
-throughout your application, use:
-
-```js
-env.PORT;
-```
-
-This gives you a central configuration boundary:
-
-```text
-process.env
-     ↓
-  envalid
-     ↓
-  env.js
-     ↓
-Application
-```
-
-Your application only consumes validated configuration.
-
----
-
-# 13. `process.env` vs `env`
-
-Without envalid:
-
-```js
-process.env.PORT;
-```
-
-Type/value:
-
-```text
-"5000"
-```
-
-With envalid:
-
-```js
-env.PORT;
-```
-
-Type/value:
-
-```text
-5000
-```
-
-Therefore:
-
-```js
-app.listen(env.PORT);
-```
-
-is cleaner than repeatedly parsing environment variables.
-
----
-
-# 14. `devDefault`
-
-Sometimes you want a default only during development.
-
-Example:
-
-```js
-PORT: port({
-  devDefault: 5000,
-});
-```
-
-Conceptually:
-
-```text
-development → 5000 if missing
-production  → required
-```
-
-This is useful when local development can use a convenient default but production must explicitly provide the configuration.
-
----
-
-# 15. `example`
-
-You can provide an example value/documentation:
-
-```js
-DATABASE_URL: url({
-  example: "mongodb://localhost:27017/myapp",
-});
-```
-
-This helps communicate what the variable should look like when validation errors are displayed.
-
----
-
-# 16. `desc`
-
-Add descriptions:
-
-```js
-PORT: port({
-  desc: "HTTP server port",
-  default: 5000,
-});
-```
-
-Another example:
-
-```js
-JWT_SECRET: str({
-  desc: "Secret used to sign access tokens",
-});
-```
-
-Useful for making configuration self-documenting.
-
----
-
-# 17. Strict Validation
-
-`cleanEnv()` also helps prevent unexpected configuration from silently becoming part of your application's configuration object.
-
-The idea is:
-
-```text
-process.env
-     ↓
-define expected variables
-     ↓
-validate
-     ↓
-use only known configuration
-```
-
-This makes configuration easier to reason about.
-
----
-
-# 18. Error Handling
-
-Suppose:
-
-```env
-PORT=hello
-```
-
-and:
-
-```js
-PORT: port();
-```
-
-`envalid` detects that the value is invalid and reports a configuration error when the application starts.
-
-This is much better than discovering the problem later.
-
-Think:
-
-```text
-Application starts
-       ↓
-Validate configuration
-       ↓
-❌ Invalid
-       ↓
-Fail immediately
-```
-
-This is called **fail-fast configuration validation**.
-
----
-
-# 19. `dotenv` vs `envalid`
-
-| Library       | Responsibility                         |
-| ------------- | -------------------------------------- |
-| `dotenv`      | Load `.env`                            |
-| `envalid`     | Validate environment variables         |
-| `process.env` | Node.js environment variable interface |
-
-Architecture:
-
-```text
-.env
- ↓
-dotenv
- ↓
-process.env
- ↓
-envalid
- ↓
-validated env
-```
-
-Remember:
+| Library   | Responsibility                            |
+| --------- | ----------------------------------------- |
+| `dotenv`  | Loads `.env` into `process.env`           |
+| `envalid` | Validates and types environment variables |
 
 > **dotenv loads. envalid validates.**
 
----
+## Security
 
-# 20. Important Validators to Learn
+`envalid` validates configuration — it does **not** encrypt or secure secrets.
 
-Start with these:
-
-```js
-str();
-num();
-port();
-bool();
-url();
-email();
-```
-
-Then learn configuration options:
-
-```js
-default
-devDefault
-choices
-desc
-example
-```
-
-These cover most Node.js backend configuration requirements.
-
----
-
-# 21. Security
-
-`envalid` validates configuration.
-
-It does **not** encrypt secrets.
-
-Do not:
-
-```js
-console.log(env.JWT_SECRET);
-```
-
-Do not commit:
-
-```text
-.env
-```
-
-Use production secret-management solutions when appropriate.
-
----
-
-# 22. Best Practice
-
-For your Node.js backend:
-
-```text
-.env
-   ↓
-dotenv
-   ↓
-process.env
-   ↓
-envalid
-   ↓
-src/config/env.js
-   ↓
-Express / MongoDB / Redis / JWT / Pino
-```
-
-Use:
-
-```js
-env.DATABASE_URL;
-env.JWT_SECRET;
-env.REDIS_URL;
-env.PORT;
-```
-
-instead of accessing:
-
-```js
-process.env.DATABASE_URL;
-process.env.JWT_SECRET;
-process.env.REDIS_URL;
-process.env.PORT;
-```
-
-throughout the application.
-
-```js
-import 'dotenv/config';
-
-import { cleanEnv, str } from 'envalid';
-
-export const env = cleanEnv(process.env, {
-  MONGODB_URL: str({
-    desc: 'MongoDB connection URL',
-    example: 'mongodb://localhost:27017/test',
-  }),
-});
-```
-Use it:
-
-```js
-import { env } from './config/env.js';
-
-console.log(env.MONGODB_URL);
-```
----
-
-# Quick Revision
-
-```text
-envalid
-│
-├── What?
-│   └── Environment variable validation
-│
-├── Install
-│   └── npm install envalid
-│
-├── Main function
-│   └── cleanEnv()
-│
-├── Validators
-│   ├── str()
-│   ├── num()
-│   ├── port()
-│   ├── bool()
-│   ├── url()
-│   └── email()
-│
-├── Options
-│   ├── default
-│   ├── devDefault
-│   ├── choices
-│   ├── desc
-│   └── example
-│
-└── Core idea
-    └── dotenv = load
-        envalid = validate
-```
+- Don't log validated secrets (`console.log(env.JWT_SECRET)`).
+- Don't commit `.env` to version control.
+- Use a real secrets manager in production where appropriate.
 
 ## One-line definition
 
-> **envalid validates, converts, and cleans Node.js environment variables so your application starts with a reliable configuration.**
+> `envalid` validates, converts, and cleans Node.js environment variables so your application starts with a reliable, typed configuration — or fails immediately if something's wrong.
