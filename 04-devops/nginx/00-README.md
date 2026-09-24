@@ -4,15 +4,15 @@ Nginx sits in front of a Node.js app in almost every real deployment. This folde
 
 ## In this folder
 
-| File | Covers |
-|---|---|
-| `01-reverse-proxy-basics.md` | Why put Nginx in front of Node at all, `proxy_pass`, essential headers, and Express's `trust proxy` |
-| `02-tls-https.md` | HTTPS termination at Nginx, and getting a free certificate with Certbot/Let's Encrypt |
-| `03-static-files-and-compression.md` | Serving static assets directly from Nginx, and gzip/Brotli compression |
-| `04-caching.md` | Nginx-level response caching (`proxy_cache`) and browser caching headers |
-| `05-load-balancing.md` | Distributing requests across multiple Node instances with `upstream` |
-| `06-rate-limiting.md` | Stopping abusive traffic before it reaches Node, with `limit_req` |
-| `07-commands-and-troubleshooting.md` | The commands you'll actually run, and how to debug a broken config |
+| File                                 | Covers                                                                                              |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `01-reverse-proxy-basics.md`         | Why put Nginx in front of Node at all, `proxy_pass`, essential headers, and Express's `trust proxy` |
+| `02-tls-https.md`                    | HTTPS termination at Nginx, and getting a free certificate with Certbot/Let's Encrypt               |
+| `03-static-files-and-compression.md` | Serving static assets directly from Nginx, and gzip/Brotli compression                              |
+| `04-caching.md`                      | Nginx-level response caching (`proxy_cache`) and browser caching headers                            |
+| `05-load-balancing.md`               | Distributing requests across multiple Node instances with `upstream`                                |
+| `06-rate-limiting.md`                | Stopping abusive traffic before it reaches Node, with `limit_req`                                   |
+| `07-commands-and-troubleshooting.md` | The commands you'll actually run, and how to debug a broken config                                  |
 
 ## Why Node needs this at all
 

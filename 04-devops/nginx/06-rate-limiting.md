@@ -53,7 +53,7 @@ http {
 }
 ```
 
-Different from request *rate* — this limits how many connections a single client can have **open at once**, useful for things like file downloads where one client shouldn't be able to open dozens of parallel connections.
+Different from request _rate_ — this limits how many connections a single client can have **open at once**, useful for things like file downloads where one client shouldn't be able to open dozens of parallel connections.
 
 ---
 
@@ -94,7 +94,7 @@ Application-level rate limiting (`08-authentication-security/06-rate-limiting.md
 
 ## Quick summary
 
-- `limit_req` throttles request *rate* per key (usually IP); `limit_conn` limits concurrent *connections* per key
+- `limit_req` throttles request _rate_ per key (usually IP); `limit_conn` limits concurrent _connections_ per key
 - `burst`/`nodelay` control how bursty traffic is handled rather than rejected outright
 - Set `limit_req_status 429` — Nginx's default `503` is semantically wrong for this situation
 - Apply stricter limits to sensitive endpoints (login, password reset) than general API traffic

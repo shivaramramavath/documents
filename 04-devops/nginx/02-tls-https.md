@@ -81,7 +81,7 @@ server {
 ```
 
 - `ssl_protocols TLSv1.2 TLSv1.3` — disables outdated, weaker TLS versions (1.0/1.1)
-- **HSTS** (`Strict-Transport-Security`) tells browsers to *always* use HTTPS for this domain going forward, even if a user types `http://` — protects against a downgrade attack on the very first request. Be cautious enabling this with a long `max-age` until you're confident HTTPS is fully working, since browsers will refuse to fall back to HTTP for the duration.
+- **HSTS** (`Strict-Transport-Security`) tells browsers to _always_ use HTTPS for this domain going forward, even if a user types `http://` — protects against a downgrade attack on the very first request. Be cautious enabling this with a long `max-age` until you're confident HTTPS is fully working, since browsers will refuse to fall back to HTTP for the duration.
 
 ---
 

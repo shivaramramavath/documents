@@ -43,15 +43,15 @@ upstream node_app {
 }
 ```
 
-| Strategy | Behavior | Use when |
-|---|---|---|
-| Round-robin (default) | Even rotation across backends | Stateless backends, fairly uniform request cost |
-| `least_conn` | Favors the least-busy backend | Requests vary a lot in how long they take |
-| `ip_hash` | Same client always hits the same backend | Backends hold in-memory session state (see below) |
+| Strategy              | Behavior                                 | Use when                                          |
+| --------------------- | ---------------------------------------- | ------------------------------------------------- |
+| Round-robin (default) | Even rotation across backends            | Stateless backends, fairly uniform request cost   |
+| `least_conn`          | Favors the least-busy backend            | Requests vary a lot in how long they take         |
+| `ip_hash`             | Same client always hits the same backend | Backends hold in-memory session state (see below) |
 
 ### Why `ip_hash` matters for session state
 
-If your app keeps session data in memory rather than a shared store like Redis (`07-databases/redis/02-caching-and-sessions.md`), a client load-balanced to a *different* instance than the one holding their session will unexpectedly appear logged out. `ip_hash` avoids this by pinning a client to one backend — but the more robust fix is to move session state into Redis so it doesn't matter which instance handles a given request at all.
+If your app keeps session data in memory rather than a shared store like Redis (`07-databases/redis/02-caching-and-sessions.md`), a client load-balanced to a _different_ instance than the one holding their session will unexpectedly appear logged out. `ip_hash` avoids this by pinning a client to one backend — but the more robust fix is to move session state into Redis so it doesn't matter which instance handles a given request at all.
 
 ---
 
@@ -88,11 +88,11 @@ Open-source Nginx's health checking is this passive, failure-based kind — it d
 
 ## Load balancing vs `cluster`: same goal, different layer
 
-| | `cluster` (`02-core-modules/10-cluster-and-worker-threads.md`) | Nginx `upstream` |
-|---|---|---|
-| Scope | One machine, multiple processes | Any number of machines/containers |
-| Managed by | Node itself | Infrastructure (Nginx, or an orchestrator) |
-| Typical use | Using all cores on a single server | Scaling across multiple servers/containers, or fronting a `cluster`-based app too |
+|             | `cluster` (`02-core-modules/10-cluster-and-worker-threads.md`) | Nginx `upstream`                                                                  |
+| ----------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Scope       | One machine, multiple processes                                | Any number of machines/containers                                                 |
+| Managed by  | Node itself                                                    | Infrastructure (Nginx, or an orchestrator)                                        |
+| Typical use | Using all cores on a single server                             | Scaling across multiple servers/containers, or fronting a `cluster`-based app too |
 
 These aren't mutually exclusive — a common real setup is Nginx (or a cloud load balancer) distributing traffic across several **containers**, each of which might itself run a clustered Node process using every core on its own machine.
 

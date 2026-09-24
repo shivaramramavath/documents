@@ -65,7 +65,7 @@ By default, Nginx's cache key includes the scheme, method, host, and URI. Two re
 proxy_cache_key "$scheme$request_method$host$uri";  # ignore query string entirely
 ```
 
-Be deliberate here — stripping query params from the cache key means two URLs that *do* return different content (e.g. `?page=1` vs `?page=2`) would incorrectly share a cached entry.
+Be deliberate here — stripping query params from the cache key means two URLs that _do_ return different content (e.g. `?page=1` vs `?page=2`) would incorrectly share a cached entry.
 
 ---
 
@@ -85,10 +85,10 @@ For finer-grained purging, either use Nginx Plus (the paid version, which suppor
 
 ## Browser caching vs Nginx `proxy_cache`: two different layers
 
-| | Where it lives | Applies to |
-|---|---|---|
-| Browser cache (`Cache-Control`, `expires` — see `03-static-files-and-compression.md`) | The client's own browser | Only that one client, for assets it fetched itself |
-| `proxy_cache` | Nginx, shared across all clients | Every client hitting the same cached endpoint |
+|                                                                                       | Where it lives                   | Applies to                                         |
+| ------------------------------------------------------------------------------------- | -------------------------------- | -------------------------------------------------- |
+| Browser cache (`Cache-Control`, `expires` — see `03-static-files-and-compression.md`) | The client's own browser         | Only that one client, for assets it fetched itself |
+| `proxy_cache`                                                                         | Nginx, shared across all clients | Every client hitting the same cached endpoint      |
 
 Both are commonly used together: static assets get long browser cache lifetimes, while dynamic-but-cacheable API responses get a shorter `proxy_cache` lifetime shared across everyone.
 

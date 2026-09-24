@@ -36,11 +36,11 @@ server {
 
 ### What each header actually does
 
-| Header | Why it's needed |
-|---|---|
-| `Host $host` | Without it, Node sees `localhost` as the requested host, not the real domain |
-| `X-Real-IP` / `X-Forwarded-For` | Node otherwise sees every request as coming from Nginx's own IP, not the real client |
-| `X-Forwarded-Proto` | Tells Node whether the original request was HTTPS — needed since Nginx talks to Node over plain HTTP regardless |
+| Header                            | Why it's needed                                                                                                  |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `Host $host`                      | Without it, Node sees `localhost` as the requested host, not the real domain                                     |
+| `X-Real-IP` / `X-Forwarded-For`   | Node otherwise sees every request as coming from Nginx's own IP, not the real client                             |
+| `X-Forwarded-Proto`               | Tells Node whether the original request was HTTPS — needed since Nginx talks to Node over plain HTTP regardless  |
 | `Upgrade` / `Connection: upgrade` | Required for WebSocket connections (`12-realtime/01-websocket-and-socketio.md`) to pass through the proxy at all |
 
 ---
