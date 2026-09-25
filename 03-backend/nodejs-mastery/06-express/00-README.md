@@ -13,6 +13,7 @@ Express is the framework most Node APIs are built with — a thin, well-designed
 | `05-validation.md`             | Validating request input before it reaches your business logic                                               |
 | `06-auth-and-authorization.md` | Authenticating requests and authorizing what an authenticated user can do                                    |
 | `07-file-upload.md`            | Handling file uploads with `multer`                                                                          |
+| `08_http-errors.md`            | Build in methods from standard errors with `http-errors`                                                     |
 
 ## Why Express, and why now
 
